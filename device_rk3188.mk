@@ -17,6 +17,10 @@ endif
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
 
+# Recovery
+PRODUCT_PACKAGES += \
+    init.recovery.rk30board.rc
+
 $(call inherit-product, build/target/product/full.mk)
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0

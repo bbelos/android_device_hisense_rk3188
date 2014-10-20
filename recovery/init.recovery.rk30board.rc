@@ -1,0 +1,8 @@
+on early-init
+    insmod /drmboot.ko
+    insmod /rockchip_gslX680.ko
+    insmod /rk30xxnand_ko.ko
+    # insmod /rk30xxnand_ko.ko.3.0.8+
+    # insmod /rk30xxnand_ko.ko.3.0.36+
+
+    write /sys/bus/platform/drivers/usb20_otg/force_usb_mode 2

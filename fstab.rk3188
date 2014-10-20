@@ -1,22 +1,10 @@
-#       4096 mtdblock0	misc
-#      12288 mtdblock1	kernel
-#      12288 mtdblock2	boot
-#      32768 mtdblock3	recovery
-#      65536 mtdblock4	backup
-#    1048576 mtdblock5	cache
-#       4096 mtdblock6	metadata
-#       4096 mtdblock7	kpanic
-#    1048576 mtdblock8	system
-#   13369344 mtdblock9	userdata
-# mount point	fstype    device    	[device2]
-
-# Android fstab file.
-#<src>                                                  <mnt_point>         <type>    <mnt_flags and options>                       <fs_mgr_flags>
-# The filesystem that contains the filesystem checker binary (typically /system) cannot
-# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
-/dev/block/mtd/by-name/system 		/system 	ext4 	ro,seclabel,noatime,nodiratime,user_xattr,barrier=1,data=ordered,noauto_da_alloc,discard wait
-/dev/block/mtd/by-name/cache 		/cache 		ext4 	rw,seclabel,nosuid,nodev,noatime,nodiratime,user_xattr,barrier=1,data=ordered,noauto_da_alloc,discard wait,check
-#/dev/block/mtd/by-name/metadata 	/metadata 	ext4 	rw,seclabel,nosuid,nodev,noatime,nodiratime,user_xattr,barrier=1,noauto_da_alloc,discard 0 0
-/dev/block/mtd/by-name/userdata 	/data 		ext4 	rw,seclabel,nosuid,nodev,noatime,nodiratime,user_xattr,barrier=1,data=ordered,noauto_da_alloc,discard wait,check
-# /sys/kernel/debug /sys/kernel/debug debugfs rw,relatime 0 0
-# /dev/fuse /mnt/shell/emulated fuse rw,nosuid,nodev,relatime,user_id=1023,group_id=1023,default_permissions,allow_other 0 0
+/misc       mtd         misc
+/kernel     mtd         kernel                     flags=backup=1;display=kernel
+/boot       mtd         boot                       flags=backup=1
+/recovery   mtd         recovery                   flags=backup=1;display=recovery
+/cache      ext4        /dev/block/mtdblock6       flags=backup=1
+/data       ext4        /dev/block/mtdblock7
+/system     ext4        /dev/block/mtdblock9
+/sdcard     vfat        /data/media/0      flags=backup=1;wipeingui;storage
+/external_sd    vfat    /dev/block/mmcblk0p1    /dev/block/mmcblk0      flags=wipeingui;storage;removable
+/usb-otg    auto        /dev/block/sda   /dev/block/sda1      flags=display="USB Storage";storage;wipeingui;removable
