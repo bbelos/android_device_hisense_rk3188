@@ -1,11 +1,15 @@
-/misc       mtd         misc
-/kernel     mtd         kernel                     flags=backup=1;display=kernel
-/boot       mtd         boot                       flags=backup=1
-/recovery   mtd         recovery                   flags=backup=1;display=recovery
-/cache      ext4        /dev/block/mtdblock6       flags=backup=1
-/data       ext4        /dev/block/mtdblock10
-/system     ext4        /dev/block/mtdblock9
-/sdcard     vfat        /data/media/0      flags=backup=1;wipeingui;storage
-/external_sd    vfat    /dev/block/mmcblk0p1    /dev/block/mmcblk0      flags=wipeingui;storage;removable
-/usb-otg    auto        /dev/block/sda   /dev/block/sda1      flags=display="USB Storage";storage;wipeingui;removable
+# Android fstab file.
+#<src>                                       <mnt_point>         <type>    <mnt_flags and options>       <fs_mgr_flags>
+/dev/block/mtdblock2       mtd         misc	defaults	recoveryonly
+#/kernel     mtd         kernel                     flags=backup=1;display=kernel
+#/boot       mtd         boot                       flags=backup=1
+#/recovery   mtd         recovery                   flags=backup=1;display=recovery
+/dev/block/mtdblock6		/cache      ext4               defaults	defaults
+/dev/block/mtdblock10	/data       ext4        	   defaults	recoveryonly
+/dev/block/mtdblock9		/system     ext4        	   defaults	recoveryonly
+#/sdcard     vfat        /data/media/0      flags=backup=1;wipeingui;storage
+#/external_sd    vfat    /dev/block/mmcblk0p1    /dev/block/mmcblk0      flags=wipeingui;storage;removable
+#/usb-otg    auto        /dev/block/sda   /dev/block/sda1      flags=display="USB Storage";storage;wipeingui;removable
+
+
 
