@@ -95,8 +95,6 @@ static int get_framebuffer(GGLSurface *fb)
     int fd;
     void *bits;
 
-    fprintf(stderr, "%s: E\n",__func__);
-
     fd = open("/dev/graphics/fb0", O_RDWR);
     if (fd < 0) {
         perror("cannot open fb0");
@@ -115,7 +113,7 @@ static int get_framebuffer(GGLSurface *fb)
         return -1;
     }
 
-    has_overlay = target_has_overlay(fi.id);
+    //has_overlay = target_has_overlay(fi.id);
 
     if(isTargetMdp5())
         setDisplaySplit();
@@ -186,11 +184,6 @@ static int get_framebuffer(GGLSurface *fb)
 
     fb++;
 
-    /* check if we can use double buffering */
-    return fd;
-
-    double_buffering = 1;
-
     fb->version = sizeof(*fb);
     fb->width = vi.xres;
     fb->height = vi.yres;
@@ -205,7 +198,6 @@ static int get_framebuffer(GGLSurface *fb)
 }
 
 static void get_memory_surface(GGLSurface* ms) {
-    fprintf(stderr, "%s: E\n",__func__);
   ms->version = sizeof(*ms);
   ms->width = vi.xres;
   ms->height = vi.yres;
@@ -215,7 +207,6 @@ static void get_memory_surface(GGLSurface* ms) {
 }
 
 void setDisplaySplit(void) {
-    fprintf(stderr, "%s: E\n",__func__);
     char split[64] = {0};
     FILE* fp = fopen("/sys/class/graphics/fb0/msm_fb_split", "r");
     if (fp) {
@@ -236,7 +227,6 @@ void setDisplaySplit(void) {
 }
 
 int getLeftSplit(void) {
-    fprintf(stderr, "%s: E\n",__func__);
    //Default even split for all displays with high res
    int lSplit = vi.xres / 2;
 
@@ -248,12 +238,10 @@ int getLeftSplit(void) {
 }
 
 int getRightSplit(void) {
-    fprintf(stderr, "%s: E\n",__func__);
    return rightSplit;
 }
 
 bool isDisplaySplit(void) {
-    fprintf(stderr, "%s: E\n",__func__);
     if (vi.xres > MAX_DISPLAY_DIM)
         return true;
     //check if right split is set by driver
@@ -264,18 +252,15 @@ bool isDisplaySplit(void) {
 }
 
 int getFbXres(void) {
-    fprintf(stderr, "%s: E\n",__func__);
     return vi.xres;
 }
 
 int getFbYres (void) {
-    fprintf(stderr, "%s: E\n",__func__);
     return vi.yres;
 }
 
 static void set_active_framebuffer(unsigned n)
 {
-    fprintf(stderr, "%s: E\n",__func__);
     if (n > 1 || !double_buffering) return;
     vi.yres_virtual = vi.yres * NUM_BUFFERS;
     vi.yoffset = n * vi.yres;
@@ -287,7 +272,6 @@ static void set_active_framebuffer(unsigned n)
 
 void gr_flip(void)
 {
-    fprintf(stderr, "%s: E\n",__func__);
     if (has_overlay) {
         // Allocate overly. It'll exit early if overlay already
         // allocated and allocate it if not already allocated.
@@ -330,7 +314,6 @@ void gr_flip(void)
 
 void gr_color(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
-    fprintf(stderr, "%s: E\n",__func__);
     GGLContext *gl = gr_context;
     GGLint color[4];
     color[0] = ((r << 8) | r) + 1;
@@ -342,20 +325,17 @@ void gr_color(unsigned char r, unsigned char g, unsigned char b, unsigned char a
 
 int gr_measure(const char *s)
 {
-    fprintf(stderr, "%s: E\n",__func__);
     return gr_font->cwidth * strlen(s);
 }
 
 void gr_font_size(int *x, int *y)
 {
-    fprintf(stderr, "%s: E\n",__func__);
     *x = gr_font->cwidth;
     *y = gr_font->cheight;
 }
 
 int gr_text(int x, int y, const char *s, int bold)
 {
-    fprintf(stderr, "%s: E\n",__func__);
     GGLContext *gl = gr_context;
     GRFont *font = gr_font;
     unsigned off;
@@ -384,7 +364,6 @@ int gr_text(int x, int y, const char *s, int bold)
 }
 
 void gr_texticon(int x, int y, gr_surface icon) {
-    fprintf(stderr, "%s: E\n",__func__);
     if (gr_context == NULL || icon == NULL) {
         return;
     }
@@ -408,7 +387,6 @@ void gr_texticon(int x, int y, gr_surface icon) {
 
 void gr_fill(int x1, int y1, int x2, int y2)
 {
-    fprintf(stderr, "%s: E\n",__func__);
     x1 += overscan_offset_x;
     y1 += overscan_offset_y;
 
@@ -421,7 +399,6 @@ void gr_fill(int x1, int y1, int x2, int y2)
 }
 
 void gr_blit(gr_surface source, int sx, int sy, int w, int h, int dx, int dy) {
-    fprintf(stderr, "%s: E\n",__func__);
     if (gr_context == NULL || source == NULL) {
         return;
     }
@@ -440,7 +417,6 @@ void gr_blit(gr_surface source, int sx, int sy, int w, int h, int dx, int dy) {
 }
 
 unsigned int gr_get_width(gr_surface surface) {
-    fprintf(stderr, "%s: E\n",__func__);
     if (surface == NULL) {
         return 0;
     }
@@ -448,7 +424,6 @@ unsigned int gr_get_width(gr_surface surface) {
 }
 
 unsigned int gr_get_height(gr_surface surface) {
-    fprintf(stderr, "%s: E\n",__func__);
     if (surface == NULL) {
         return 0;
     }
@@ -457,7 +432,6 @@ unsigned int gr_get_height(gr_surface surface) {
 
 static void gr_init_font(void)
 {
-    fprintf(stderr, "%s: E\n",__func__);
     GGLSurface *ftex;
     unsigned char *bits, *rle;
     unsigned char *in, data;
@@ -487,7 +461,6 @@ static void gr_init_font(void)
 
 int gr_init(void)
 {
-    fprintf(stderr, "%s: E\n",__func__);
     gglInit(&gr_context);
     GGLContext *gl = gr_context;
 
@@ -516,35 +489,21 @@ int gr_init(void)
 
     /* start with 0 as front (displayed) and 1 as back (drawing) */
     gr_active_fb = 0;
-    if (!has_overlay)
-        set_active_framebuffer(0);
+    set_active_framebuffer(0);
     gl->colorBuffer(gl, &gr_mem_surface);
 
     gl->activeTexture(gl, 0);
     gl->enable(gl, GGL_BLEND);
     gl->blendFunc(gl, GGL_SRC_ALPHA, GGL_ONE_MINUS_SRC_ALPHA);
 
-    gr_fb_blank(true);
-    gr_fb_blank(false);
-
-    if (has_overlay) {
-        if (alloc_ion_mem(fi.line_length * vi.yres) ||
-            allocate_overlay(gr_fb_fd, gr_framebuffer)) {
-                free_ion_mem();
-        }
-    }
+    //gr_fb_blank(true);
+    //gr_fb_blank(false);
 
     return 0;
 }
 
 void gr_exit(void)
 {
-    fprintf(stderr, "%s: E\n",__func__);
-    if (has_overlay) {
-        free_overlay(gr_fb_fd);
-        free_ion_mem();
-    }
-
     close(gr_fb_fd);
     gr_fb_fd = -1;
 
@@ -557,25 +516,21 @@ void gr_exit(void)
 
 int gr_fb_width(void)
 {
-    fprintf(stderr, "%s: E\n",__func__);
     return gr_framebuffer[0].width - 2*overscan_offset_x;
 }
 
 int gr_fb_height(void)
 {
-    fprintf(stderr, "%s: E\n",__func__);
     return gr_framebuffer[0].height - 2*overscan_offset_y;
 }
 
 gr_pixel *gr_fb_data(void)
 {
-    fprintf(stderr, "%s: E\n",__func__);
     return (unsigned short *) gr_mem_surface.data;
 }
 
 void gr_fb_blank(bool blank)
 {
-    fprintf(stderr, "%s: E\n",__func__);
 #ifdef RECOVERY_LCD_BACKLIGHT_PATH
     int fd;
 

@@ -72,7 +72,6 @@ static memInfo mem_info;
 
 static int map_mdp_pixel_format()
 {
-    fprintf(stderr, "%s: Overlay E\n",__func__);
     int format = MDP_RGB_565;
 #if defined(RECOVERY_BGRA)
     format = MDP_BGRA_8888;
@@ -88,7 +87,6 @@ static bool isMDP5 = false;
 
 bool target_has_overlay(char *version)
 {
-    fprintf(stderr, "%s: Overlay E\n",__func__);
 #ifdef MSM_BSP
     int mdp_version;
 
@@ -112,7 +110,6 @@ bool target_has_overlay(char *version)
 
 bool isTargetMdp5()
 {
-    fprintf(stderr, "%s: Overlay E\n",__func__);
     if (isMDP5)
         return true;
 
@@ -122,7 +119,6 @@ bool isTargetMdp5()
 #ifdef MSM_BSP
 
 int free_ion_mem(void) {
-    fprintf(stderr, "%s: Overlay E\n",__func__);
     if (!overlay_supported)
         return -EINVAL;
 
@@ -150,7 +146,6 @@ int free_ion_mem(void) {
 
 int alloc_ion_mem(unsigned int size)
 {
-    fprintf(stderr, "%s: Overlay E\n",__func__);
     if (!overlay_supported)
         return -EINVAL;
     int result;
@@ -200,7 +195,6 @@ int alloc_ion_mem(unsigned int size)
 
 int allocate_overlay(int fd, GGLSurface gr_fb[])
 {
-    fprintf(stderr, "%s: Overlay E\n",__func__);
     int ret = 0;
 
     if (!overlay_supported)
@@ -303,7 +297,6 @@ int allocate_overlay(int fd, GGLSurface gr_fb[])
 
 int free_overlay(int fd)
 {
-    fprintf(stderr, "%s: Overlay E\n",__func__);
     if (!overlay_supported)
         return -EINVAL;
 
@@ -357,7 +350,6 @@ int free_overlay(int fd)
 
 int overlay_display_frame(int fd, GGLubyte* data, size_t size)
 {
-    fprintf(stderr, "%s: Overlay E\n",__func__);
     if (!overlay_supported)
         return -EINVAL;
 
