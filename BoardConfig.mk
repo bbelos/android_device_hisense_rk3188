@@ -45,9 +45,10 @@ BOARD_EGL_CFG := $(DEVICE_FOLDER)/egl.cfg
 #TARGET_RECOVERY_FSTAB := device/hisense/rk3188/fstab.rk3188
 #RECOVERY_FSTAB_VERSION := 2
 
+BOARD_CUSTOM_GRAPHICS := ../../../device/hisense/rk3188/recovery/graphics.c ../../../device/hisense/rk3188/recovery/graphics_overlay.c
+
 BOARD_HAS_NO_SELECT_BUTTON := true
 TARGET_PREBUILT_RECOVERY_KERNEL := $(DEVICE_FOLDER)/kernel
-TARGET_RECOVERY_INITRC := $(DEVICE_FOLDER)/recovery/init.rc
 TARGET_RECOVERY_FSTAB := $(DEVICE_FOLDER)/recovery/recovery.fstab
 BOARD_HAS_LARGE_FILESYSTEM := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/mt_usb/gadget/lun%d/file"
@@ -77,23 +78,5 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/recovery/drmboot.ko:root/drmboot.ko \
     $(DEVICE_FOLDER)/recovery/rk30xxnand_ko.ko.3.0.8+:root/rk30xxnand_ko.ko.3.0.8+ \
     $(DEVICE_FOLDER)/recovery/rk30xxnand_ko.ko.3.0.36+:root/rk30xxnand_ko.ko.3.0.36+
-
-#twrp
-#BOARD_CUSTOM_RECOVERY_KEYMAPPING := $(DEVICE_FOLDER)/recovery/recovery_keys.c
-#TW_BOARD_CUSTOM_GRAPHICS := ../../../$(DEVICE_FOLDER)/recovery/graphics.c
-#TW_DEFAULT_EXTERNAL_STORAGE := true
-#TW_INTERNAL_STORAGE_PATH := "/data/media/0"
-#TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
-#TW_EXTERNAL_STORAGE_PATH := "/external_sd"
-#TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
-#RECOVERY_GRAPHICS_USE_LINELENGTH := true
-#TW_NO_SCREEN_TIMEOUT := true
-#TW_NO_SCREEN_BLANK := true
-#TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
-#TARGET_USERIMAGES_USE_EXT4 := true
-#TWHAVE_SELINUX := true
-#TW_INCLUDE_FB2PNG := true
-#BOARD_HAS_NO_REAL_SDCARD := true
-#RECOVERY_SDCARD_ON_DATA := true
 
 BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_FOLDER)/custombootimg.mk
