@@ -16,14 +16,16 @@ LOCAL_PATH := $(call my-dir)
 
 RKBOOTIMG := $(HOST_OUT_EXECUTABLES)/rkbootimg
 
+RKCRC := $(HOST_OUT_EXECUTABLES)/rkcrc
+
 INSTALLED_BOOTIMAGE_TARGET := $(PRODUCT_OUT)/boot.img
 INSTALLED_RECOVERYIMAGE_TARGET := $(PRODUCT_OUT)/recovery.img
 
-$(INSTALLED_BOOTIMAGE_TARGET): $(PRODUCT_OUT)/kernel $(INSTALLED_RAMDISK_TARGET) $(RKBOOTIMG)
+$(INSTALLED_BOOTIMAGE_TARGET): $(PRODUCT_OUT)/kernel $(INSTALLED_RAMDISK_TARGET) $(RKCRC)
 	$(call pretty,"Boot image: $@")
 	$(hide) $(RKBOOTIMG) --kernel $(PRODUCT_OUT)/kernel --ramdisk $(INSTALLED_RAMDISK_TARGET) --output $@
 
-$(INSTALLED_RECOVERYIMAGE_TARGET): $(PRODUCT_OUT)/kernel $(recovery_ramdisk) $(RKBOOTIMG)
+$(INSTALLED_RECOVERYIMAGE_TARGET): $(PRODUCT_OUT)/kernel $(recovery_ramdisk) $(RKCRC)
 	@echo ----- Making RK recovery image ------
-	$(hide) $(RKBOOTIMG) --kernel $(PRODUCT_OUT)/kernel --ramdisk $(recovery_ramdisk) --output $@
+	$(hide) $(RKCRC) -k $(recovery_ramdisk) $(PRODUCT_OUT)/recovery.img
 	@echo ----- Made RK recovery image -------- $@
