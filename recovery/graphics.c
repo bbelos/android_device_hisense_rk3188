@@ -113,7 +113,7 @@ static int get_framebuffer(GGLSurface *fb)
         return -1;
     }
 
-    //has_overlay = target_has_overlay(fi.id);
+    has_overlay = target_has_overlay(fi.id);
 
     if(isTargetMdp5())
         setDisplaySplit();
@@ -183,6 +183,13 @@ static int get_framebuffer(GGLSurface *fb)
     }
 
     fb++;
+
+    /* check if we can use double buffering */
+    if (vi.yres * fi.line_length * 2 > fi.smem_len)
+        return fd;
+
+    return fd;
+    //double_buffering = 1;
 
     fb->version = sizeof(*fb);
     fb->width = vi.xres;
@@ -287,20 +294,6 @@ void gr_flip(void)
         /* swap front and back buffers */
         if (double_buffering)
             gr_active_fb = (gr_active_fb + 1) & 1;
-
-#ifdef BOARD_HAS_FLIPPED_SCREEN
-        /* flip buffer 180 degrees for devices with physicaly inverted screens */
-        unsigned int i;
-        unsigned int j;
-        uint8_t tmp;
-        for (i = 0; i < ((vi.xres_virtual * vi.yres)/2); i++) {
-	    for (j = 0; j < PIXEL_SIZE; j++) {
-		    tmp = gr_mem_surface.data[i * PIXEL_SIZE + j];
-		    gr_mem_surface.data[i * PIXEL_SIZE + j] = gr_mem_surface.data[(vi.xres_virtual * vi.yres * PIXEL_SIZE) - ((i+1) * PIXEL_SIZE) + j];
-		    gr_mem_surface.data[(vi.xres_virtual * vi.yres * PIXEL_SIZE) - ((i+1) * PIXEL_SIZE) + j] = tmp;
-	    }
-        }
-#endif
 
         /* copy data from the in-memory surface to the buffer we're about
          * to make active. */
@@ -489,21 +482,34 @@ int gr_init(void)
 
     /* start with 0 as front (displayed) and 1 as back (drawing) */
     gr_active_fb = 0;
-    set_active_framebuffer(0);
+    if (!has_overlay)
+        set_active_framebuffer(0);
     gl->colorBuffer(gl, &gr_mem_surface);
 
     gl->activeTexture(gl, 0);
     gl->enable(gl, GGL_BLEND);
     gl->blendFunc(gl, GGL_SRC_ALPHA, GGL_ONE_MINUS_SRC_ALPHA);
 
-    //gr_fb_blank(true);
-    //gr_fb_blank(false);
+    gr_fb_blank(true);
+    gr_fb_blank(false);
+
+    if (has_overlay) {
+        if (alloc_ion_mem(fi.line_length * vi.yres) ||
+            allocate_overlay(gr_fb_fd, gr_framebuffer)) {
+                free_ion_mem();
+        }
+    }
 
     return 0;
 }
 
 void gr_exit(void)
 {
+    if (has_overlay) {
+        free_overlay(gr_fb_fd);
+        free_ion_mem();
+    }
+
     close(gr_fb_fd);
     gr_fb_fd = -1;
 
