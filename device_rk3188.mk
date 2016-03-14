@@ -17,9 +17,17 @@ endif
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
 
+# Init files
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/fstab.rk30board:root/fstab.rk30board
+
 # Recovery
 PRODUCT_PACKAGES += \
     init.recovery.rk30board.rc
+
+# enable repeatable keys in cwm
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.cwm.enable_key_repeat=true
 
 $(call inherit-product, build/target/product/full.mk)
 

@@ -1,5 +1,7 @@
 LOCAL_PATH:= $(call my-dir)
 
+ifeq ($(TARGET_DEVICE),rk3188)
+
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := rkcrc.c
 LOCAL_STATIC_LIBRARIES := libmincrypt
@@ -18,3 +20,5 @@ LOCAL_UNSTRIPPED_PATH := $(PRODUCT_OUT)/symbols/utilities
 LOCAL_MODULE_PATH := $(PRODUCT_OUT)/utilities
 LOCAL_FORCE_STATIC_EXECUTABLE := true
 include $(BUILD_EXECUTABLE)
+
+endif

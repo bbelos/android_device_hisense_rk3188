@@ -34,6 +34,8 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 2147483648
 BOARD_KERNELIMAGE_PARTITION_SIZE := 16777216
 BOARD_FLASH_BLOCK_SIZE := 131072
 
+TARGET_USERIMAGES_USE_EXT4 := true
+
 # Kernel
 BOARD_KERNEL_CMDLINE := 
 BOARD_KERNEL_BASE := 0x60400000
@@ -42,21 +44,23 @@ TARGET_PREBUILT_KERNEL := $(DEVICE_FOLDER)/kernel
 BOARD_EGL_CFG := $(DEVICE_FOLDER)/egl.cfg
 
 # Recovery
-#TARGET_RECOVERY_FSTAB := device/hisense/rk3188/fstab.rk3188
-#RECOVERY_FSTAB_VERSION := 2
+BOARD_HAS_NO_MISC_PARTITION := true
+TARGET_RECOVERY_FSTAB := $(DEVICE_FOLDER)/recovery/recovery.fstab
+RECOVERY_FSTAB_VERSION := 2
 
 BOARD_CUSTOM_GRAPHICS := ../../../device/hisense/rk3188/recovery/graphics.c ../../../device/hisense/rk3188/recovery/graphics_overlay.c
 
 BOARD_HAS_NO_SELECT_BUTTON := true
 TARGET_PREBUILT_RECOVERY_KERNEL := $(DEVICE_FOLDER)/kernel
-TARGET_RECOVERY_FSTAB := $(DEVICE_FOLDER)/recovery/recovery.fstab
 BOARD_HAS_LARGE_FILESYSTEM := true
-TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/mt_usb/gadget/lun%d/file"
-BOARD_UMS_LUNFILE := "/sys/class/android_usb/android0/f_mass_storage/lun/file"
-BOARD_UMS_2ND_LUNFILE := "/sys/class/android_usb/android0/f_mass_storage/lun1/file"
+#TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/mt_usb/gadget/lun%d/file"
+#BOARD_UMS_LUNFILE := "/sys/class/android_usb/android0/f_mass_storage/lun/file"
+#BOARD_UMS_2ND_LUNFILE := "/sys/class/android_usb/android0/f_mass_storage/lun1/file"
 BOARD_USE_CUSTOM_RECOVERY_FONT:= \"roboto_15x24.h\"
 DEVICE_RESOLUTION := 1280x800
 TARGET_RECOVERY_PIXEL_FORMAT := "RGB_565"
+#TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+#TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 
 # Misc
 USE_OPENGL_RENDERER := true
